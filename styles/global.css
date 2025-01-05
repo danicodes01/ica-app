@@ -1,0 +1,165 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&family=Ubuntu:wght@300;400&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+    --foreground: #3c3c4399;
+    --background: #f2f2f7ff;
+    --gradient-nav: linear-gradient(
+      to right,
+      rgba(0, 0, 0, 1) 0%,
+      rgba(30, 30, 30, 0.9) 50%,
+      rgba(0, 0, 0, 1) 100%
+    );
+    --link: #5ac8faff;
+    --blur-rgb: 0, 0, 0;
+    --game-text: #ffd700ff;
+  }
+  
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --foreground: #ebebf599;
+      --background: #1c1c1eff;
+      --gradient-nav: linear-gradient(
+        to right,
+        rgba(255, 255, 255, 1) 0%,
+        rgba(245, 245, 245, 0.9) 50%,
+        rgba(255, 255, 255, 1) 100%
+      );
+      --link: #64d2ffff;
+      --blur-rgb: 255, 255, 255;
+      --game-text: #ffc107ff;
+    }
+  }
+  
+  html {
+    font-family: 'Press Start 2P', serif;
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+  }
+  
+  * {
+    box-sizing: border-box;
+  }
+  
+  .fixed {
+    position: fixed;
+  }
+  
+  .w-full {
+    width: 100%;
+  }
+  
+  .h-full {
+    height: 100%;
+  }
+  
+  .overflow-hidden {
+    overflow: hidden;
+  }
+  
+  body {
+    color: var(--foreground);
+    background: linear-gradient(to bottom, transparent, var(--background)) var(--background);
+    margin: 0;
+  }
+  
+  /* Adjust width and height of the keyboard shortcut picker */
+  .monaco-keybinding-picker {
+    width: 300px !important; 
+    height: auto !important; 
+  }
+  
+  /* adjust the font size or padding for smaller elements */
+  .monaco-keybinding-picker .monaco-list {
+    font-size: 12px; 
+    padding: 5px;    
+  }
+  
+  .starwars-container {
+    position: fixed;
+    inset: 0;
+    height: 100vh;
+    overflow: hidden;
+    perspective: 1200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .starwars-crawl {
+    width: 100vw;
+    margin: auto;
+    position: absolute;
+    left: 50%;
+    top: 66%;
+    transform: translateX(-50%) rotateX(20deg);
+  }
+  
+  .starwars-content {
+    color: #FFD700;
+    font-size: clamp(14px, 1.5vw, 20px);
+    text-align: justify;
+    padding: 0 20%;
+  }
+  
+  @keyframes fadeOut {
+    0% {
+      opacity: 1;
+    }
+    
+    100% {
+      opacity: 0;
+    }
+  }
+  
+  .starwars-line {
+    line-height: 1.8;
+    opacity: 1;
+    transform: translateZ(0);
+  }
+  
+  .starwars-line.fade-out {
+    animation: fadeOut 6s ease-in forwards;
+  }
+  
+  .fade-mask {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to top, transparent 0%, transparent 20%, black 100%);
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0;
+    transition: opacity 0.6s ease;
+  }
+  
+  .fade-mask.active {
+    opacity: 1;
+  }
+  
+  @keyframes crawl {
+    0% {
+      top: 100vh;
+      transform: translateX(-50%) rotateX(20deg) scale(1);
+    }
+    100% {
+      top: var(--end-position);
+      transform: translateX(-50%) rotateX(20deg) scale(1);
+    }
+  }
+  
+  /* STYLES FOR FIRST LINE */
+  .starwars-line:first-child {
+    font-size: 3rem; 
+    text-align: center; 
+    margin-top: 50px; 
+    margin-bottom: 80px;
+    line-height: 2; 
+  }
+  
