@@ -1,6 +1,6 @@
 // types/base/game.ts
 
-import { GameArea } from "./enums";
+import { PlanetType } from "./enums";
   
   export interface GameColors {
     readonly background: string;
@@ -17,7 +17,7 @@ import { GameArea } from "./enums";
   
   export interface GameState {
     readonly playerPosition: GamePosition;
-    readonly currentArea: GameArea;
+    readonly currentArea: PlanetType;
     readonly activeChallenge: string | null;
     isPaused: boolean;
   }

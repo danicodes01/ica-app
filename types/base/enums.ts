@@ -19,10 +19,10 @@ export enum ProgressStatus {
   }
 
   export enum PlanetType {
-    MISSION_CONTROL = 'MISSION_CONTROL',
     CHROMANOVA = 'CHROMANOVA',
     SYNTAXIA = 'SYNTAXIA',
-    QUANTUMCORE = 'QUANTUMCORE'
+    QUANTUMCORE = 'QUANTUMCORE',
+    MISSION_CONTROL = 'MISSION_CONTROL'
   }
   
   export enum ModuleStatus {
@@ -42,11 +42,11 @@ export enum ProgressStatus {
   }
 
   export enum CurrencyType {
-    LUNAR = 'LUNAR',
-    CHROMANOVA = 'CHROMANOVA',
-    SYNTAXIA = 'SYNTAXIA',
-    QUANTUM = 'QUANTUM',
-    GALACTIC = 'GALACTIC'
+    LUNAR = 'lunar',
+    CHROMANOVA = 'chromanova',
+    SYNTAXIA = 'syntaxia',
+    QUANTUM = 'quantum',
+    GALACTIC = 'galactic'
   }
 
   export enum ChallengeDifficulty {

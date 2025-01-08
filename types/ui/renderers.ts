@@ -1,6 +1,6 @@
 import { PlanetType } from '../base';
 import { GameColors } from '../base/game';
-import { IPlanet } from '../models/planet';
+import { DrawPlanet } from '../base/drawing';
 
 // Planet Renderer Types
 export interface DrawOptions {
@@ -25,7 +25,7 @@ export interface StarOptions {
 
 export interface LabelOptions {
   ctx: CanvasRenderingContext2D;
-  planet: IPlanet;
+  planet: DrawPlanet;
   isHovered: boolean;
   colors: GameColors;
 }
@@ -50,14 +50,14 @@ export interface IGameRenderer {
   ): void;
   drawPlanet(
     ctx: CanvasRenderingContext2D,
-    planet: IPlanet,
+    planet: DrawPlanet,
     isHovered: boolean,
     colors: GameColors
   ): void;
   isNearPlanet(
     playerX: number,
     playerY: number,
-    planet: IPlanet,
+    planet: DrawPlanet,
     threshold?: number
   ): boolean;
 }

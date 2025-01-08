@@ -1,23 +1,21 @@
-// models/planet/methods
-
 import { Schema } from 'mongoose';
-import { IPlanetDocument } from '../../types/models/planet';
+import { IPlanetDocument } from '@/types/models';
+import { getRelativePosition } from '@/utils/helper'; // Assuming you have this utility function
 
-export const attachMethods = (schema: Schema): void => {
-  // Instance methods
-  schema.methods.calculateTotalXP = function(this: IPlanetDocument): number {
-    return this.stations.length * 100;
-  };
+// Instance Methods
+const instanceMethods = {
+  computePosition: function (
+    this: IPlanetDocument,
+    width: number,
+    height: number,
+    percentX: number,
+    percentY: number
+  ): { x: number; y: number; radius: number } {
+    return getRelativePosition(width, height, percentX, percentY);
+  },
+};
 
-  schema.methods.checkCompletion = async function(this: IPlanetDocument): Promise<void> {
-    if (this.completedStations === this.totalStations) {
-      this.isUnlocked = true;
-      await this.save();
-    }
-  };
-
-  // Static methods
-  schema.static('findBySlug', async function(slug: string) {
-    return this.findOne({ slug: slug.toLowerCase() });
-  });
+// Attach Methods
+export const attachMethods = (schema: Schema<IPlanetDocument>): void => {
+  schema.methods = { ...schema.methods, ...instanceMethods };
 };
