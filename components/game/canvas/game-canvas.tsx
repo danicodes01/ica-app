@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState, useCallback } from 'react';
-import { GameState, GameColors } from '@/types/base/drawing';
+import { GameState } from '@/types/base/drawing';
 import { DrawPlanet } from '@/types/base/drawing'
 import { getGamePlanets } from '@/app/_data/planets';
 import IntroCrawl from './intro-crawl';
@@ -10,15 +10,7 @@ import { PlanetRenderer } from '@/utils/game/planetRenderer';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import { PlanetType } from '@/types/base/enums';
-
-// constants
-const COLORS: GameColors = {
-  background: '#1C1C1EFF',
-  foreground: '#EBEBF599',
-  accent: '#64D2FFFF',
-  stars: 'rgba(235, 235, 245, 0.8)',
-  glow: 'rgba(100, 210, 255, 0.6)',
-};
+import{ COLORS } from '@/lib/constants'
 
 const SHIP_SPEED = 5;
 const INTERACTION_RADIUS = 50;

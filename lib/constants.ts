@@ -1,3 +1,5 @@
+import {GameColors} from '@/types/base/drawing'
+
 export const DEFAULT_USER_STATE = {
   totalXP: 0,
   currencies: {
@@ -23,4 +25,13 @@ export const DEFAULT_USER_STATE = {
     planets: [],
     stations: [],
   },
+};
+
+
+export const COLORS: GameColors = {
+  background: '#1C1C1EFF',
+  foreground: '#EBEBF599',
+  accent: '#64D2FFFF',
+  stars: 'rgba(235, 235, 245, 0.8)',
+  glow: 'rgba(100, 210, 255, 0.6)',
 };

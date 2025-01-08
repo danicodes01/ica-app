@@ -1,4 +1,4 @@
-// planets.ts
+// _data/planets.ts
 import { PlanetType } from '@/types';
 import { DrawPlanet } from '@/types/base/drawing'
 
