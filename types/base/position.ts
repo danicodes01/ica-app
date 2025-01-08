@@ -7,11 +7,6 @@ export type Point = {
   y: number;
 };
 
-export interface Position {
-  x: number;
-  y: number;
-}
-
 export interface Position2D {
   readonly x: number;
   readonly y: number;
@@ -34,10 +29,10 @@ export interface InteractiveElement {
   readonly trigger: InteractionTrigger;
 }
 
-export const isPosition = (value: unknown): value is Position => {
+export const isPosition = (value: unknown): value is Position3D => {
   return typeof value === 'object' && value !== null &&
-    'x' in value && typeof (value as Position).x === 'number' &&
-    'y' in value && typeof (value as Position).y === 'number';
+    'x' in value && typeof (value as Position2D).x === 'number' &&
+    'y' in value && typeof (value as Position2D).y === 'number';
 };
 
 export const isPosition3D = (value: unknown): value is Position3D => {

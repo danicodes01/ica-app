@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-const MONGODB_URI = process.env.MONGODB_URI as string; // Type assertion
+const MONGODB_URI = process.env.MONGODB_URI as string;
 
 let isConnected = false; // To track the connection status
 
@@ -21,3 +21,5 @@ const connectDB = async () => {
 };
 
 export default connectDB;
+
+

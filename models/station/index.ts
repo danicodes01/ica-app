@@ -1,9 +1,9 @@
 import { model, models } from 'mongoose';
 import StationSchema from './schema';
-import { attachMethods } from './methods';
-import { IStationDocument, IStationModel } from '../../types/models/station';
+// import { attachMethods } from './methods';
+import { IStationDocument } from '../../types/models/station';
 
-attachMethods(StationSchema);
+// attachMethods(StationSchema);
 
 export const Station = 
-  models.Station || model<IStationDocument, IStationModel>('Station', StationSchema);
+  models.Station || model<IStationDocument>('Station', StationSchema);
