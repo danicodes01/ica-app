@@ -2,31 +2,9 @@
 
 import { DrawPlanet } from '@/types/base/drawing';
 import { GameColors } from '@/types/base/game';
-import { PlanetRenderer } from './planetRenderer';
+import { PlanetRenderer} from './planetRenderer';
+import { LabelOptions, StarOptions, UFOOptions } from '@/types/ui/renderers';
 
-interface StarOptions {
-  ctx: CanvasRenderingContext2D;
-  x: number;
-  y: number;
-  size: number;
-  alpha: number;
-  colors: GameColors;
-}
-
-interface LabelOptions {
-  ctx: CanvasRenderingContext2D;
-  planet: DrawPlanet;
-  isHovered: boolean;
-  colors: GameColors;
-}
-
-interface UFOOptions {
-  ctx: CanvasRenderingContext2D;
-  x: number;
-  y: number;
-  colors: GameColors;
-  isMoving: boolean;
-}
 
 export class GameRenderer {
   static drawStar({ ctx, x, y, size, alpha }: StarOptions): void {

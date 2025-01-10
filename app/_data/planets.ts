@@ -1,6 +1,6 @@
 // _data/planets.ts
-import { PlanetType } from '@/types';
-import { DrawPlanet } from '@/types/base/drawing'
+import { PlanetData } from '@/types/models/planet';
+import { PlanetType } from '@/types/base/enums';
 
 // Helper function to calculate positions
 const getRelativePosition = (
@@ -14,9 +14,9 @@ const getRelativePosition = (
   radius: Math.min(width, height) * 0.05, // 5% of the smallest dimension
 });
 
-export const getGamePlanets = (width: number, height: number): DrawPlanet[] => [
+export const getGamePlanets = (width: number, height: number): PlanetData[] => [
     {
-      id: 'mission-control',
+      _id: 'mission-control',
       slug: 'mission-control',
       name: 'Mission Control',
       order: 0,
@@ -31,7 +31,7 @@ export const getGamePlanets = (width: number, height: number): DrawPlanet[] => [
       isStartingPlanet: true
     },
     {
-      id: 'systems-division',
+      _id: 'systems-division',
       slug: 'syntaxia',
       name: 'SYNTAXIA',
       order: 1,
@@ -46,7 +46,7 @@ export const getGamePlanets = (width: number, height: number): DrawPlanet[] => [
       isStartingPlanet: false
     },
     {
-    id: 'frontend-corps',
+    _id: 'frontend-corps',
     slug: 'chromanova',
     name: 'CHROMANOVA',
     order: 2,
@@ -55,13 +55,13 @@ export const getGamePlanets = (width: number, height: number): DrawPlanet[] => [
     description: 'Master UI/UX & frontend systems',
     position: getRelativePosition(width, height, 0.25, 0.5),
     icon: '🌌',
-    isUnlocked: true,
+    isUnlocked: false,
     requiredXP: 2000,
     prerequisites: [],
     isStartingPlanet: false
   },
   {
-    id: 'quantum-core',
+    _id: 'quantum-core',
     slug: 'quantumcore',
     name: 'QUANTUMCORE',
     order: 3,
@@ -71,7 +71,7 @@ export const getGamePlanets = (width: number, height: number): DrawPlanet[] => [
     icon: '⚛️',
     description: 'Where quantum algorithms and data science solve complex problems',
     isUnlocked: false,
-    requiredXP: 3000,
+    requiredXP: 4000,
     prerequisites: [],
     isStartingPlanet: false
   },

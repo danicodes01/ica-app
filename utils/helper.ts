@@ -1,10 +1,10 @@
 export const getRelativePosition = (
-    width: number,
-    height: number,
-    percentX: number,
-    percentY: number,
-  ): { x: number; y: number; radius: number } => ({
-    x: width * percentX,
-    y: height * percentY,
-    radius: Math.min(width, height) * 0.05, // 5% of the smallest dimension
-  });
+  dbPosition: { x: number; y: number },
+  screenWidth: number, 
+  screenHeight: number,
+) => ({
+  x: screenWidth * dbPosition.x,
+  y: screenHeight * dbPosition.y,
+  radius: Math.min(screenWidth, screenHeight) * 0.05
+});
+

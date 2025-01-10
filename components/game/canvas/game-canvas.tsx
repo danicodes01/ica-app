@@ -1,9 +1,10 @@
+// components/game/canvas/game-canvas.tsx
+
 'use client';
 
 import { useEffect, useRef, useState, useCallback } from 'react';
-import { GameState } from '@/types/base/drawing';
+import { GameState } from '@/types/base/game';
 import { DrawPlanet } from '@/types/base/drawing'
-import { getGamePlanets } from '@/app/_data/planets';
 import IntroCrawl from './intro-crawl';
 import { GameRenderer } from '@/utils/game/gameRenderer';
 import { PlanetRenderer } from '@/utils/game/planetRenderer';
@@ -11,26 +12,40 @@ import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import { PlanetType } from '@/types/base/enums';
 import{ COLORS } from '@/lib/constants'
+import { IPlanetDocument } from '@/types';
 
 const SHIP_SPEED = 5;
 const INTERACTION_RADIUS = 50;
 
+const getRelativePosition = (
+  width: number,
+  height: number,
+  percentX: number,
+  percentY: number,
+): { x: number; y: number; radius: number } => ({
+  x: width * percentX,
+  y: height * percentY,
+  radius: Math.min(width, height) * 0.05, // 5% of the smallest dimension
+});
+
 interface GameCanvasProps {
   initialArea?: PlanetType;
+  planets: IPlanetDocument[]  // This is already in your interface
 }
 
 export default function GameCanvas({
   initialArea = PlanetType.MISSION_CONTROL,
+  planets: dbPlanets
 }: GameCanvasProps) {
   const router = useRouter();
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [keys, setKeys] = useState<Set<string>>(new Set());
+  const [planets, setPlanets] = useState<DrawPlanet[]>([]);
   const [isMouseMoving, setIsMouseMoving] = useState(false);
   const mouseMovingTimeout = useRef<NodeJS.Timeout>(null);
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
   const [hoveredPlanet, sethoveredPlanet] = useState<DrawPlanet | null>(null);
-  const [planets, setplanets] = useState<DrawPlanet[]>([]);
   const [showIntro, setShowIntro] = useState(false);
   const [touchStart, setTouchStart] = useState<{ x: number; y: number } | null>(
     null,
@@ -91,13 +106,16 @@ export default function GameCanvas({
     [dimensions.width, dimensions.height],
   );
   const handlePlanetInteraction = useCallback((planet: DrawPlanet) => {
-    if (!planet?.slug) return;
+    if (!planet?.slug || !planet.isUnlocked) {
+      console.log(planet.requiredXP)
+      return;
+    }
     router.push(`/game/planets/${planet.slug}`);
   }, [router]);
   
   const handleCanvasClick = useCallback(
     (e: MouseEvent) => {
-      if (!canvasRef.current || !hoveredPlanet) return;
+      if (!canvasRef.current || !hoveredPlanet || !hoveredPlanet.isUnlocked) return;
       
       const rect = canvasRef.current.getBoundingClientRect();
       const clickX = e.clientX - rect.left;
@@ -111,7 +129,7 @@ export default function GameCanvas({
       );
   
       if (distanceToPlayer <= INTERACTION_RADIUS && hoveredPlanet) {
-        handlePlanetInteraction(hoveredPlanet);  // Pass the entire planet object
+        handlePlanetInteraction(hoveredPlanet);
       }
     },
     [gameState.playerPosition, hoveredPlanet, handlePlanetInteraction],
@@ -206,8 +224,8 @@ export default function GameCanvas({
   const drawPlanet = useCallback(
     (ctx: CanvasRenderingContext2D, planet: DrawPlanet): void => {
       const { x, y, radius } = planet.position;
-      const isHovered = hoveredPlanet?.id === planet.id;
-
+      const isHovered = hoveredPlanet?._id === planet._id;
+  
       const drawOptions = {
         ctx,
         x,
@@ -217,22 +235,8 @@ export default function GameCanvas({
         isHovered,
         accentColor: COLORS.accent,
       };
-
-      switch (planet.id) {
-        case 'mission-control':
-          PlanetRenderer.drawMoon(drawOptions);
-          break;
-        case 'frontend-corps':
-          PlanetRenderer.drawChromanova(drawOptions);
-          break;
-        case 'systems-division':
-          PlanetRenderer.drawSyntaxia(drawOptions);
-          break;
-        case 'quantum-core':
-          PlanetRenderer.drawQuantumCore(drawOptions);
-          break;
-      }
-
+  
+      PlanetRenderer.drawPlanet(planet.drawType, drawOptions);
       drawPlanetLabel(ctx, planet, isHovered);
     },
     [hoveredPlanet, drawPlanetLabel],
@@ -259,7 +263,7 @@ export default function GameCanvas({
         colors: {
           ...COLORS,
           glow:
-            hoveredPlanet?.id === 'systems-division'
+            hoveredPlanet?._id === 'systems-division'
               ? 'rgba(100, 255, 100, 0.6)'
               : COLORS.glow,
         },
@@ -286,7 +290,10 @@ export default function GameCanvas({
       if (e.code === 'Space') {
         e.preventDefault();
         if (hoveredPlanet) {
-          handlePlanetInteraction(hoveredPlanet);  // Pass the entire planet object
+          console.log(hoveredPlanet.type)
+        }
+        if (hoveredPlanet && hoveredPlanet.isUnlocked) {
+          handlePlanetInteraction(hoveredPlanet);
         }
         return;
       }
@@ -316,9 +323,20 @@ export default function GameCanvas({
   // Effects
   useEffect(() => {
     if (dimensions.width && dimensions.height) {
-      setplanets(getGamePlanets(dimensions.width, dimensions.height));
+      const positionedPlanets = dbPlanets.map(planet => ({
+        ...planet,
+        _id: planet._id.toString(),
+        position: getRelativePosition(
+          dimensions.width,
+          dimensions.height,
+          planet.position.x,
+          planet.position.y
+        )
+      })) as DrawPlanet[];
+      
+      setPlanets(positionedPlanets);
     }
-  }, [dimensions.width, dimensions.height]);
+  }, [dimensions.width, dimensions.height, dbPlanets]);
 
   useEffect(() => {
     if (typeof window === 'undefined') return;

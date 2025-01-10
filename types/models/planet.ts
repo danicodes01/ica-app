@@ -1,29 +1,12 @@
+// types/models/planet.ts
 import { Document, Types } from "mongoose";
-import { PlanetType } from '@/types/base/enums';
-import { DrawType } from "../base/drawing";
+import { BasePlanet } from "../base/planet";
+import { PlanetType } from "../base/enums";
+import { PlanetPosition } from "../base/shared";
 
-export interface PlanetPosition {
-  x: number;
-  y: number;
-  radius: number;
-}
-
-export const drawTypeValues: DrawType[] = ['moon', 'chromanova', 'syntaxia', 'quantumCore'];
-
-export interface IPlanetDocument extends Document {
-  id: string;
-  slug: string;
-  name: string;
-  order: number;
-  type: PlanetType;
-  drawType: DrawType;
-  description: string;
-  position: PlanetPosition;
-  icon: string;
-  isUnlocked: boolean;
-  requiredXP: number;
-  prerequisites: string[];
-  isStartingPlanet: boolean;
+// Extend Document but override the _id type
+export interface IPlanetDocument extends Omit<Document, '_id'>, BasePlanet {
+  _id: Types.ObjectId;  // Force _id to be ObjectId for Mongoose documents
 }
 
 export interface GamePlanetData {
@@ -40,4 +23,8 @@ export interface GamePlanetData {
 export type LeanPlanetDocument = Omit<IPlanetDocument, keyof Document> & {
   _id: Types.ObjectId;
   stations?: Array<{ id: string; stationNumber: number }>;
+};
+
+export type PlanetData = Omit<BasePlanet, '_id'> & {
+  _id: string | Types.ObjectId;
 };

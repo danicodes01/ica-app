@@ -1,17 +1,9 @@
 // app/_components/game/utils/planetRenderer.ts
 
-import { DrawType } from '@/types/base/drawing';
+import { DrawType } from "@/types/base/shared";
+import { DrawOptions } from "@/types/ui/renderers";
 
-interface DrawOptions {
-  ctx: CanvasRenderingContext2D;
-  x: number;
-  y: number;
-  radius: number;
-  isUnlocked: boolean;
-  isHovered: boolean;
-  accentColor: string;
-}
-  
+
 export class PlanetRenderer {
   static drawHoverEffect({
     ctx,
@@ -30,8 +22,8 @@ export class PlanetRenderer {
     }
   }
 
-static drawMoon(options: DrawOptions): void {
-  const { ctx, x, y, radius, isUnlocked, isHovered, accentColor } = options;
+  static drawMoon(options: DrawOptions): void {
+    const { ctx, x, y, radius, isUnlocked, isHovered, accentColor } = options;
     ctx.save();
 
     if (isUnlocked || isHovered) {
@@ -314,16 +306,19 @@ static drawMoon(options: DrawOptions): void {
     this.drawHoverEffect({ ctx, x, y, radius, isHovered, accentColor });
     ctx.restore();
   }
+  // In planetRenderer.ts
   static drawPlanet(type: DrawType, options: DrawOptions): void {
     const planetDrawings: Record<DrawType, (options: DrawOptions) => void> = {
-      moon: this.drawMoon,
-      chromanova: this.drawChromanova,
-      syntaxia: this.drawSyntaxia,
-      quantumCore: this.drawQuantumCore,
+      moon: this.drawMoon.bind(this),
+      chromanova: this.drawChromanova.bind(this),
+      syntaxia: this.drawSyntaxia.bind(this),
+      quantumCore: this.drawQuantumCore.bind(this),
     };
 
     if (planetDrawings[type]) {
-      planetDrawings[type].bind(this)(options);
+      planetDrawings[type](options);
+    } else {
+      console.warn('Unknown planet type:', type);
     }
   }
 }
