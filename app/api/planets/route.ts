@@ -1,12 +1,23 @@
 import { NextResponse } from 'next/server';
+import connectDB from '@/lib/db/mongoose';
+import {Planet} from '@/models/planet';
 
 export async function GET() {
-  // Basic implementation for now since we're not using it yet
-  return NextResponse.json({ message: "Stations endpoint" });
-}
-
-export async function POST() {
-  return NextResponse.json({ message: "POST not implemented" }, { status: 501 });
+  try {
+    await connectDB();
+    const planets = await Planet.find({}).lean();
+    
+    return NextResponse.json({
+      success: true,
+      planets
+    });
+  } catch (error) {
+    console.error('Error fetching planets:', error);
+    return NextResponse.json(
+      { success: false, error: 'Failed to fetch planets' },
+      { status: 500 }
+    );
+  }
 }
 
 

@@ -1,4 +1,4 @@
-import {GameColors} from '@/types/base/drawing'
+import { GameColors } from "@/types/base/game";
 
 export const DEFAULT_USER_STATE = {
   totalXP: 0,
@@ -35,3 +35,5 @@ export const COLORS: GameColors = {
   stars: 'rgba(235, 235, 245, 0.8)',
   glow: 'rgba(100, 210, 255, 0.6)',
 };
+
+export const PLANET_RADIUS_FACTOR = 0.05;
